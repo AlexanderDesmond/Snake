@@ -17,11 +17,21 @@ let snake = [
   [1, 4]
 ];
 
-// Keep track of keys pressed
-let keyboardState = [0, 0];
+// To control the snake's direction.
+let direction = [1, 0];
 
-function updateLoop() {}
+// Handle each frame.
+function updateLoop() {
+  let tail = snake.pop();
+  let head = snake[0];
+  tail[0] = head[0] + direction[0];
+  tail[1] = head[1] + direction[1];
+  // Add last element of snake as the new first element of snake
+  snake.unshift(tail);
+  draw();
+}
 
+// Handle drawing of snake.
 function draw() {
   CONTEXT.clearRect(0, 0, 600, 600);
   // Draw snake
@@ -30,14 +40,22 @@ function draw() {
   });
 }
 
-draw();
+// Run updateLoop() once every second.
+setInterval(updateLoop, 1000);
 
-// Remove last element of snake
-keyboardState = [0, -1];
-let tail = snake.pop();
-let head = snake[0];
-tail[0] = head[0] + keyboardState[0];
-tail[1] = head[1] + keyboardState[1];
-// Add last element of snake as the new first element of snake
-snake.unshift(tail);
-draw();
+document.body.onArrowKeyPress = function(e) {
+  if (e.keyCode === 40) {
+    // DOWN
+    direction = [0, 1];
+  } else if (e.keyCode === 38) {
+    // UP
+    direction = [0, -1];
+  } else if (e.keyCode === 39) {
+    //RIGHT
+    direction = [1, 0];
+  } else if (e.keyCode === 37) {
+    // LEFT
+    direction = [-1, 0];
+  }
+  //console.log("UP KEY", e);
+};
