@@ -20,21 +20,36 @@ let snake = [
 // To control the snake's direction.
 let direction = [1, 0];
 
+// Set default apple position
+apple = [8, 3];
+
 // Handle each frame.
 function updateLoop() {
-  let tail = snake.pop();
-  let head = snake[0];
-  tail[0] = head[0] + direction[0];
-  tail[1] = head[1] + direction[1];
-  // Add last element of snake as the new first element of snake
-  snake.unshift(tail);
+  // Add last element of the snake as the new first element of the snake.
+  snake.unshift([snake[0][0] + direction[0], snake[0][1] + direction[1]]);
+
+  // When the snake eats an apple, generate another apple on the board.
+  if (snake[0][0] == apple[0] && snake[0][1] == apple[1]) {
+    apple = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)];
+  } else {
+    // If no apple was eaten, just remove the last element of the snake.
+    snake.pop();
+  }
+
   draw();
 }
 
 // Handle drawing of snake.
 function draw() {
+  // Clear game board
   CONTEXT.clearRect(0, 0, 600, 600);
+
+  // Draw apple
+  CONTEXT.fillStyle = "red";
+  CONTEXT.fillRect(apple[0], apple[1], 1, 1);
+
   // Draw snake
+  CONTEXT.fillStyle = "black";
   snake.forEach(([x, y]) => {
     CONTEXT.fillRect(x, y, 1, 1);
   });
@@ -43,7 +58,8 @@ function draw() {
 // Run updateLoop() once every second.
 setInterval(updateLoop, 1000);
 
-document.body.onArrowKeyPress = function(e) {
+// Change the direction of the snake when an arrow key is pressed.
+document.body.onkeydown = function(e) {
   if (e.keyCode === 40) {
     // DOWN
     direction = [0, 1];
@@ -57,5 +73,4 @@ document.body.onArrowKeyPress = function(e) {
     // LEFT
     direction = [-1, 0];
   }
-  //console.log("UP KEY", e);
 };
