@@ -29,11 +29,27 @@ function updateLoop() {
   snake.unshift([snake[0][0] + direction[0], snake[0][1] + direction[1]]);
 
   // When the snake eats an apple, generate another apple on the board.
-  if (snake[0][0] == apple[0] && snake[0][1] == apple[1]) {
-    apple = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)];
+  if (snake[0][0] === apple[0] && snake[0][1] === apple[1]) {
+    apple = [Math.floor(Math.random() * 60), Math.floor(Math.random() * 60)];
   } else {
     // If no apple was eaten, just remove the last element of the snake.
     snake.pop();
+  }
+
+  // If the snake eats itself, restart the game.
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i][0] === snake[0][0] && snake[i][1] === snake[0][1]) {
+      // Reset snake position.
+      snake = [
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [1, 3],
+        [1, 4]
+      ];
+      // Reset sake direction.
+      direction = [1, 0];
+    }
   }
 
   draw();
