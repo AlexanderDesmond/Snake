@@ -36,9 +36,15 @@ function updateLoop() {
     snake.pop();
   }
 
-  // If the snake eats itself, restart the game.
+  // If the snake eats itself or hits the edge of the board, restart the game.
   for (let i = 1; i < snake.length; i++) {
-    if (snake[i][0] === snake[0][0] && snake[i][1] === snake[0][1]) {
+    if (
+      (snake[0][0] === snake[i][0] && snake[0][1] === snake[i][1]) ||
+      snake[0][0] < 0 ||
+      snake[0][0] >= 60 ||
+      snake[0][1] < 0 ||
+      snake[0][1] >= 60
+    ) {
       // Reset snake position.
       snake = [
         [0, 1],
