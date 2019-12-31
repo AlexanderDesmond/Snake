@@ -7,6 +7,7 @@ CANVAS.width = 600;
 CANVAS.height = 600;
 CANVAS.style = "border: solid 1px black";
 CONTEXT.scale(10, 10);
+const BOARD_SIZE = CANVAS.width / 10;
 
 // Set snake starting position
 let snake = [
@@ -30,7 +31,7 @@ function updateLoop() {
 
   // When the snake eats an apple, generate another apple on the board.
   if (snake[0][0] === apple[0] && snake[0][1] === apple[1]) {
-    apple = [Math.floor(Math.random() * 60), Math.floor(Math.random() * 60)];
+    apple = [generateRandomPosition(), generateRandomPosition()];
   } else {
     // If no apple was eaten, just remove the last element of the snake.
     snake.pop();
@@ -41,9 +42,9 @@ function updateLoop() {
     if (
       (snake[0][0] === snake[i][0] && snake[0][1] === snake[i][1]) ||
       snake[0][0] < 0 ||
-      snake[0][0] >= 60 ||
+      snake[0][0] >= BOARD_SIZE ||
       snake[0][1] < 0 ||
-      snake[0][1] >= 60
+      snake[0][1] >= BOARD_SIZE
     ) {
       // Reset snake position.
       snake = [
@@ -96,3 +97,8 @@ document.body.onkeydown = function(e) {
     direction = [-1, 0];
   }
 };
+
+// Creates and returns a random number based on the board size.
+function generateRandomPosition() {
+  return Math.floor(Math.random() * BOARD_SIZE);
+}
